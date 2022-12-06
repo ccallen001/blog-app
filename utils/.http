@@ -2,8 +2,7 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-  "name": "Test 2",
-  "author": "Boo",
-  "url": "boo@boo.com",
-  "likes": 3
+  "name": "Test Undefined Likes",
+  "author": "Undefined Likes??? Should default to 0",
+  "url": "likes@undefined.com"
 }
