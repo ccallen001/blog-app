@@ -1,8 +1,26 @@
-POST http://localhost:3003/api/blogs
-content-type: application/json
+# GET http://localhost:3003/api/blogs
+# content-type: application/json
 
-{
-  "name": "Test Undefined Likes",
-  "author": "Undefined Likes??? Should default to 0",
-  "url": "likes@undefined.com"
-}
+# GET http://localhost:3003/api/blogs/63953f90ee7984c40df3ba44
+# content-type: application/json
+
+# POST http://localhost:3003/api/blogs
+# content-type: application/json
+
+# {
+#   "title": "Delete Me",
+#   "author": "Delety Bill",
+#   "url": "delete@gone.com"
+# }
+
+# PUT http://localhost:3003/api/blogs/63953f90ee7984c40df3ba44
+# content-type: application/json
+
+# {
+#   "title": "UPDATE Me",
+#   "author": "Delety Bill",
+#   "url": "delete@gone.com"
+# }
+
+DELETE http://localhost:3003/api/blogs/639546d677379218ad854100
+content-type: application/json
