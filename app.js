@@ -5,8 +5,10 @@ const app = express();
 
 require('mongoose')
   .connect(MONGODB_URL)
-  .then(() => console.log('connected to mongodb'))
-  .catch((err) => console.error('error connecting to mongodb', err));
+  .then(() => console.log('\x1b[42m%s\x1b[0m', 'connected to mongodb'))
+  .catch((err) =>
+    console.error('\x1b[41m%s\x1b[0m', 'error connecting to mongodb', err)
+  );
 
 app.set('json spaces', 2);
 
