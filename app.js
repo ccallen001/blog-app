@@ -13,6 +13,7 @@ require('mongoose')
 app.set('json spaces', 2);
 
 app.use(require('cors')());
+app.use(express.static('build'));
 app.use(express.json());
 
 app.use('/api/blogs', require('./controllers/blogs'));

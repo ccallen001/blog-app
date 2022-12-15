@@ -4,9 +4,9 @@
   "description": "Blog listing application",
   "main": "index.js",
   "scripts": {
-    "start:ui": "react-scripts start",
-    "start:server": "cross-env NODE_ENV=production node index.js",
+    "server": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "client": "react-scripts start",
     "build": "rm -rf build && react-scripts build",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
   },
