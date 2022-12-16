@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Blog listing application",
   "main": "index.js",
+  "keywords": [],
+  "author": "Chase Allen ccallen001@gmail.com",
+  "license": "ISC",
   "scripts": {
     "server": "cross-env NODE_ENV=production node index.js",
     "server:dev": "cross-env NODE_ENV=development nodemon index.js",
@@ -10,9 +13,6 @@
     "build": "rm -rf build && react-scripts build",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
   },
-  "keywords": [],
-  "author": "Chase Allen ccallen001@gmail.com",
-  "license": "ISC",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -53,5 +53,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:3003"
 }
