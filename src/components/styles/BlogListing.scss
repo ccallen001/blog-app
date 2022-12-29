@@ -1,0 +1,11 @@
+.BlogListing {
+  li {
+    display: inline-flex;
+    margin-bottom: 0.25rem;
+    padding: 0.25rem;
+
+    button {
+      margin-left: 2rem;
+    }
+  }
+}

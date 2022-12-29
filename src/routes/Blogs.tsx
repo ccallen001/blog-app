@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import { Blog } from '../types/Blog';
+import AddBlogForm from '../components/AddBlogForm';
+import BlogListing from '../components/BlogListing';
+import './styles/Blogs.scss';
 
-import { Blog } from './types/Blog';
-
-import './App.scss';
-
-function App() {
+export default function Blogs() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
   useEffect(() => {
@@ -20,19 +20,19 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="Blogs">
       <h1>Blog List</h1>
+      <AddBlogForm blogs={blogs} setBlogs={setBlogs} />
       <ul>
         {blogs.map((blog) => (
-          <li key={blog.id}>
-            <a href={blog.url}>
-              {blog.author} {blog.title}
-            </a>
-          </li>
+          <BlogListing
+            key={blog.id}
+            blog={blog}
+            blogs={blogs}
+            setBlogs={setBlogs}
+          />
         ))}
       </ul>
     </div>
   );
 }
-
-export default App;

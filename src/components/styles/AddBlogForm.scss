@@ -1,0 +1,13 @@
+.AddBlogForm {
+  form {
+    display: inline-block;
+
+    input {
+      display: block;
+
+      &[type='submit'] {
+        margin-left: auto;
+      }
+    }
+  }
+}

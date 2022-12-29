@@ -1,17 +1,15 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
-const blog = require('../models/blog');
 const api = supertest(app);
 
-const { Blog, initialBlogs } = require('./test-helper');
+const { Blog, initialBlogs, User, initialUsers } = require('./test-helper');
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-
-  for (const initialBlog of initialBlogs) {
-    await new Blog(initialBlog).save();
-  }
+  await User.deleteMany({});
+  await Blog.insertMany(initialBlogs);
+  await User.insertMany(initialUsers);
 });
 
 describe('getting blogs', () => {
@@ -125,6 +123,31 @@ describe('deleting a blog', () => {
     expect(blogsOneLess.body).toHaveLength(initialBlogs.length - 1);
 
     expect(blogsOneLess.body.map((blog) => blog.id)).not.toContain(id);
+  });
+
+  test('a user should have 1 less blog after deletion', async () => {
+    const usersResponse = await api.get('/api/users');
+    const userId = usersResponse.body[0].id;
+
+    const blogResponse = await api.post('/api/blogs').send({
+      title: 'User Boi',
+      author: 'Linked to user',
+      url: 'user@yeah.com',
+      likes: 11,
+      userId
+    });
+
+    console.log(blogResponse);
+
+    const userResponse = await api.get(`/api/users/${userId}`);
+
+    expect(userResponse.body.blogs.length).toEqual(1);
+
+    await api.delete(`/api/blogs${blogResponse.body.id}`);
+
+    const sameUserResponse = await api.get(`/api/users/${userId}`);
+
+    expect(sameUserResponse.body.blogs.length).toEqual(1);
   });
 });
 
