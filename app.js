@@ -4,9 +4,12 @@ const express = require('express');
 require('express-async-errors');
 const app = express();
 const cors = require('cors');
+
+const mongoose = require('mongoose');
+
+const loginController = require('./controllers/login');
 const usersController = require('./controllers/users');
 const blogsController = require('./controllers/blogs');
-const mongoose = require('mongoose');
 
 mongoose
   .connect(MONGODB_URL)
@@ -21,6 +24,7 @@ app.use(cors());
 app.use(express.static('build'));
 app.use(express.json());
 
+app.use('/api/login', loginController);
 app.use('/api/users', usersController);
 app.use('/api/blogs', blogsController);
 

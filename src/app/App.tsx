@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import Home from '../routes/Home';
-import Blogs from '../routes/Blogs';
+import Login from '../routes/Login';
 import Users from '../routes/Users';
+import Blogs from '../routes/Blogs';
 
 import './App.scss';
 
@@ -12,13 +13,15 @@ function App() {
       <Router>
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/blogs">Blogs</Link>
+          <Link to="/login">Login</Link>
           <Link to="/users">Users</Link>
+          <Link to="/blogs">Blogs</Link>
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/blogs" element={<Blogs />} />
         </Routes>
       </Router>
     </div>

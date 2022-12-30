@@ -18,9 +18,13 @@ export default function Users() {
 
   async function handleSubmit(ev: FormEvent) {
     ev.preventDefault();
+
+    const target = ev.target;
     // @ts-ignore
     const [{ value: username }, { value: password }, { value: name }] =
-      ev.target;
+      target;
+    // @ts-ignore
+    target.reset();
 
     const result = await fetch('api/users/', {
       method: 'POST',
@@ -32,7 +36,7 @@ export default function Users() {
       })
     });
     const jsonResult = await result.json();
-    console.log(jsonResult);
+    
     setUsers(users.concat(jsonResult));
   }
 
