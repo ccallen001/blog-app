@@ -11,6 +11,7 @@ blogsRouter.get('/', async (_, res) => {
     username: 1,
     name: 1
   });
+
   res.json(blogs);
 });
 
@@ -26,7 +27,7 @@ blogsRouter.post('/', async (req, res) => {
   }
 
   const { body } = req;
-  let { title, author, url, likes, userId } = body;
+  let { title, author, url, likes, user: userId } = body;
 
   if (!title || !url) return res.status(400).send('title and url are required');
 
@@ -75,11 +76,14 @@ blogsRouter.delete('/:id', async (req, res) => {
 
   await Blog.findByIdAndRemove(id);
 
-  const user = await User.findById(blog.user);
-  user.blogs = user.blogs.filter((blog) => blog.id !== id);
-  await user.save();
+  const user = await User.findById(blog?.user);
 
-  res.status(204).end();
+  if (user) {
+    user.blogs = user.blogs.filter((blog) => blog.id !== id) || [];
+    await user.save();
+  }
+
+  res.status(200).json({ message: 'success' });
 });
 
 module.exports = blogsRouter;

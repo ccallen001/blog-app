@@ -1,4 +1,5 @@
 import { FormEvent } from 'react';
+import { loginErrorMessage } from '../messages/errors';
 import './styles/Login.scss';
 
 export default function Login() {
@@ -12,9 +13,10 @@ export default function Login() {
       // @ts-ignore
       target.reset();
 
-      const response = await fetch('/api/login', {
+      const resp = await fetch('/api/login', {
         method: 'POST',
         headers: {
+          Authorization: `bearer ${sessionStorage.getItem('token') || ''}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -23,16 +25,17 @@ export default function Login() {
         })
       });
 
-      const jsonResponse = await response.json();
+      const respJson = await resp.json();
 
-      if (response.status !== 200) throw Error(jsonResponse.message);
+      if (resp.status !== 200) throw Error(respJson.message);
 
-      const { name, username: uName } = jsonResponse;
+      const { name, username: uName, token } = respJson;
 
-      alert(`Hello, ${name}! You are successfully logged in as "${uName}".`);
-      console.log(jsonResponse);
+      sessionStorage.setItem('token', token)
+
+      alert(`Hi, ${name}! You are successfully logged in as "${uName}".`);
     } catch (err) {
-      alert('There was an error logging in. Please try again.');
+      alert(loginErrorMessage);
       console.error(err);
     }
   }

@@ -127,25 +127,25 @@ describe('deleting a blog', () => {
 
   test('a user should have 1 less blog after deletion', async () => {
     const usersResponse = await api.get('/api/users');
-    const userId = usersResponse.body[0].id;
+    const user = usersResponse.body[0].id;
 
     const blogResponse = await api.post('/api/blogs').send({
       title: 'User Boi',
       author: 'Linked to user',
       url: 'user@yeah.com',
       likes: 11,
-      userId
+      user
     });
 
     console.log(blogResponse);
 
-    const userResponse = await api.get(`/api/users/${userId}`);
+    const userResponse = await api.get(`/api/users/${user}`);
 
     expect(userResponse.body.blogs.length).toEqual(1);
 
     await api.delete(`/api/blogs${blogResponse.body.id}`);
 
-    const sameUserResponse = await api.get(`/api/users/${userId}`);
+    const sameUserResponse = await api.get(`/api/users/${user}`);
 
     expect(sameUserResponse.body.blogs.length).toEqual(1);
   });

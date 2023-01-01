@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
+const { getToken, validateToken, tokenErrorObj } = require('../helpers/token');
 
 const checkUsernameUniqueness = async (username) =>
   !(await User.findOne({ username }));
@@ -26,6 +27,10 @@ usersRouter.get('/:id', async (req, res) => {
 });
 
 usersRouter.post('/', async (req, res) => {
+  if (!validateToken(getToken(req))) {
+    return res.status(401).json(tokenErrorObj);
+  }
+
   const { username, password, name } = req.body;
 
   if (!username || !password) {

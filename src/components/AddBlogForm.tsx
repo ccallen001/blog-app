@@ -11,7 +11,7 @@ interface IProps {
 
 export default function AddBlogForm({ blogs, setBlogs }: IProps) {
   const [users, setUsers] = useState<User[]>([]);
-  const [userId, setUserId] = useState('');
+  const [user, setUser] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -19,8 +19,9 @@ export default function AddBlogForm({ blogs, setBlogs }: IProps) {
         const usersResp = await fetch('/api/users');
         const usersJson = await usersResp.json();
         setUsers(usersJson);
-        setUserId(usersJson[0].id);
+        setUser(usersJson[0].id);
       } catch (err) {
+        alert(err);
         console.error(err);
       }
     })();
@@ -41,13 +42,16 @@ export default function AddBlogForm({ blogs, setBlogs }: IProps) {
 
     const resp = await fetch('/api/blogs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `bearer ${sessionStorage.getItem('token') || ''}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         title,
         author,
         url,
         likes,
-        userId
+        user
       })
     });
     const respJson = await resp.json();
@@ -72,7 +76,7 @@ export default function AddBlogForm({ blogs, setBlogs }: IProps) {
       <div>
         <label>User:</label>&nbsp;
         <select
-          onInput={(ev) => setUserId((ev.target as HTMLInputElement).value)}
+          onInput={(ev) => setUser((ev.target as HTMLInputElement).value)}
         >
           {users.map((user) => (
             <option key={user.id} value={user.id}>

@@ -13,7 +13,11 @@ export default function BlogListing({ blog, blogs, setBlogs }: IProps) {
 
   async function deleteBlog() {
     const resp = await fetch(`/api/blogs/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${sessionStorage.getItem('token') || ''}`,
+        'Content-Type': 'application/json'
+      }
     });
 
     const respJson = await resp.json();

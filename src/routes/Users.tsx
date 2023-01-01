@@ -1,4 +1,5 @@
 import { useEffect, useState, FormEvent } from 'react';
+import { handleResponseError } from '../helpers/handle-response-error';
 import './styles/Users.scss';
 
 export default function Users() {
@@ -21,27 +22,32 @@ export default function Users() {
 
     const target = ev.target;
     // @ts-ignore
-    const [{ value: username }, { value: password }, { value: name }] =
-      target;
+    const [{ value: username }, { value: password }, { value: name }] = target;
     // @ts-ignore
     target.reset();
 
-    const result = await fetch('api/users/', {
+    const res = await fetch('api/users/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `bearer ${sessionStorage.getItem('token') || ''}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         username,
         password,
         name
       })
     });
-    const jsonResult = await result.json();
-    
-    setUsers(users.concat(jsonResult));
+    const resJson = await res.json();
+    const error = resJson.error;
+
+    if (error) return handleResponseError(error);
+
+    setUsers(users.concat(resJson));
   }
 
   return (
-    <div className='Users'>
+    <div className="Users">
       <h1>Users</h1>
       <form onSubmit={handleSubmit}>
         <h4>Add User</h4>
