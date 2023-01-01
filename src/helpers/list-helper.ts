@@ -1,8 +1,10 @@
-function getTotalLikes(arrOfBlogs) {
+import { Blog } from '../types/Blog';
+
+function getTotalLikes(arrOfBlogs: Blog[]) {
   return arrOfBlogs.reduce((totalLikes, { likes }) => totalLikes + likes, 0);
 }
 
-function getFavoriteBlog(arrOfBlogs) {
+function getFavoriteBlog(arrOfBlogs: Blog[]) {
   return arrOfBlogs.reduce(
     (mostLiked, current) => {
       if (current.likes > mostLiked.likes) return current;
@@ -12,13 +14,16 @@ function getFavoriteBlog(arrOfBlogs) {
   );
 }
 
-function getAuthorWithMostBlogs(arrOfBlogs) {
-  const authorsAndCounts = arrOfBlogs.reduce((authsAndCounts, currentBlog) => {
-    if (authsAndCounts[currentBlog.author])
-      authsAndCounts[currentBlog.author]++;
-    else authsAndCounts[currentBlog.author] = 1;
-    return authsAndCounts;
-  }, {});
+function getAuthorWithMostBlogs(arrOfBlogs: Blog[]) {
+  const authorsAndCounts = arrOfBlogs.reduce(
+    (authsAndCounts: Record<string, number>, currentBlog: Blog) => {
+      if (authsAndCounts[currentBlog.author])
+        authsAndCounts[currentBlog.author]++;
+      else authsAndCounts[currentBlog.author] = 1;
+      return authsAndCounts;
+    },
+    {}
+  );
 
   let authorWithMostBlogs = {};
   let mostCount = 0;
@@ -37,13 +42,16 @@ function getAuthorWithMostBlogs(arrOfBlogs) {
   return authorWithMostBlogs;
 }
 
-function getAuthorWithMostLikes(arrOfBlogs) {
-  const authorsAndCounts = arrOfBlogs.reduce((authsAndCounts, currentBlog) => {
-    if (authsAndCounts[currentBlog.author])
-      authsAndCounts[currentBlog.author] += currentBlog.likes;
-    else authsAndCounts[currentBlog.author] = currentBlog.likes;
-    return authsAndCounts;
-  }, {});
+function getAuthorWithMostLikes(arrOfBlogs: Blog[]) {
+  const authorsAndCounts = arrOfBlogs.reduce(
+    (authsAndCounts: Record<string, number>, currentBlog: Blog) => {
+      if (authsAndCounts[currentBlog.author])
+        authsAndCounts[currentBlog.author] += currentBlog.likes;
+      else authsAndCounts[currentBlog.author] = currentBlog.likes;
+      return authsAndCounts;
+    },
+    {}
+  );
 
   let authorWithMostLikes = {};
   let mostCount = 0;
@@ -62,7 +70,7 @@ function getAuthorWithMostLikes(arrOfBlogs) {
   return authorWithMostLikes;
 }
 
-module.exports = {
+export {
   getTotalLikes,
   getFavoriteBlog,
   getAuthorWithMostBlogs,

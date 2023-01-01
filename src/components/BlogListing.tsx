@@ -1,3 +1,4 @@
+import { handleResponseError } from '../helpers/handle-response-error';
 import { Blog } from '../types/Blog';
 import './styles/BlogListing.scss';
 
@@ -11,9 +12,15 @@ export default function BlogListing({ blog, blogs, setBlogs }: IProps) {
   const { id } = blog;
 
   async function deleteBlog() {
-    await fetch(`/api/blogs/${id}`, {
+    const resp = await fetch(`/api/blogs/${id}`, {
       method: 'DELETE'
     });
+
+    const respJson = await resp.json();
+    const error = respJson.error;
+
+    if (error) return handleResponseError(error);
+
     setBlogs(blogs.filter((blog) => blog.id !== id));
   }
 

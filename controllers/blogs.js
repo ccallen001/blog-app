@@ -3,6 +3,8 @@ const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
+const { getToken, validateToken, tokenErrorObj } = require('../helpers/token');
+
 blogsRouter.get('/', async (_, res) => {
   const blogs = await Blog.find({}).populate('user', {
     id: 1,
@@ -19,6 +21,10 @@ blogsRouter.get('/:id', async (req, res) => {
 });
 
 blogsRouter.post('/', async (req, res) => {
+  if (!validateToken(getToken(req))) {
+    return res.status(401).json(tokenErrorObj);
+  }
+
   const { body } = req;
   let { title, author, url, likes, userId } = body;
 
@@ -45,6 +51,10 @@ blogsRouter.post('/', async (req, res) => {
 });
 
 blogsRouter.put('/:id', async (req, res) => {
+  if (!validateToken(getToken(req))) {
+    return res.status(401).json(tokenErrorObj);
+  }
+
   const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -54,8 +64,12 @@ blogsRouter.put('/:id', async (req, res) => {
   res.json(updatedBlog);
 });
 
-blogsRouter.delete('/:id', async (request, response) => {
-  const { id } = request.params;
+blogsRouter.delete('/:id', async (req, res) => {
+  if (!validateToken(getToken(req))) {
+    return res.status(401).json(tokenErrorObj);
+  }
+
+  const { id } = req.params;
 
   const blog = await Blog.findById(id);
 
@@ -65,7 +79,7 @@ blogsRouter.delete('/:id', async (request, response) => {
   user.blogs = user.blogs.filter((blog) => blog.id !== id);
   await user.save();
 
-  response.status(204).end();
+  res.status(204).end();
 });
 
 module.exports = blogsRouter;

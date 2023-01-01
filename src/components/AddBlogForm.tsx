@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { handleResponseError } from '../helpers/handle-response-error';
 import { Blog } from '../types/Blog';
 import { User } from '../types/User';
 import './styles/AddBlogForm.scss';
@@ -38,7 +39,7 @@ export default function AddBlogForm({ blogs, setBlogs }: IProps) {
     // @ts-ignore
     form.reset();
 
-    const response = await fetch('/api/blogs', {
+    const resp = await fetch('/api/blogs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -49,9 +50,12 @@ export default function AddBlogForm({ blogs, setBlogs }: IProps) {
         userId
       })
     });
-    const addedBlog = await response.json();
+    const respJson = await resp.json();
+    const error = respJson.error;
 
-    setBlogs(blogs.concat(addedBlog));
+    if (error) return handleResponseError(error);
+
+    setBlogs(blogs.concat(respJson));
   }
 
   return (
