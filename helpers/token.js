@@ -1,14 +1,16 @@
 const jwt = require('jsonwebtoken');
 
-function getToken(req) {
-  const auth = req.get('authorization');
+// moved to middleware
 
-  if (auth && auth.toLowerCase().startsWith('bearer ')) {
-    return auth.substring(7);
-  }
+// function getToken(req) {
+//   const auth = req.get('authorization');
 
-  return '';
-}
+//   if (auth && auth.toLowerCase().startsWith('bearer ')) {
+//     return auth.substring(7);
+//   }
+
+//   return '';
+// }
 
 function validateToken(token) {
   if (!token) return false;
@@ -22,4 +24,4 @@ function validateToken(token) {
 
 const tokenErrorObj = { error: 'token missing or invalid' };
 
-module.exports = { getToken, validateToken, tokenErrorObj };
+module.exports = { /* getToken,  */validateToken, tokenErrorObj };

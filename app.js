@@ -7,6 +7,8 @@ const cors = require('cors');
 
 const mongoose = require('mongoose');
 
+const { putTokenInReq } = require('./utils/middleware');
+
 const loginController = require('./controllers/login');
 const usersController = require('./controllers/users');
 const blogsController = require('./controllers/blogs');
@@ -23,6 +25,7 @@ app.set('json spaces', 2);
 app.use(cors());
 app.use(express.static('build'));
 app.use(express.json());
+app.use(putTokenInReq);
 
 app.use('/api/login', loginController);
 app.use('/api/users', usersController);

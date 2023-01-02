@@ -3,7 +3,7 @@ const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
-const { getToken, validateToken, tokenErrorObj } = require('../helpers/token');
+const { validateToken, tokenErrorObj } = require('../helpers/token');
 
 blogsRouter.get('/', async (_, res) => {
   const blogs = await Blog.find({}).populate('user', {
@@ -22,7 +22,7 @@ blogsRouter.get('/:id', async (req, res) => {
 });
 
 blogsRouter.post('/', async (req, res) => {
-  if (!validateToken(getToken(req))) {
+  if (!validateToken(req.token)) {
     return res.status(401).json(tokenErrorObj);
   }
 
@@ -52,7 +52,7 @@ blogsRouter.post('/', async (req, res) => {
 });
 
 blogsRouter.put('/:id', async (req, res) => {
-  if (!validateToken(getToken(req))) {
+  if (!validateToken(req.token)) {
     return res.status(401).json(tokenErrorObj);
   }
 
@@ -66,7 +66,7 @@ blogsRouter.put('/:id', async (req, res) => {
 });
 
 blogsRouter.delete('/:id', async (req, res) => {
-  if (!validateToken(getToken(req))) {
+  if (!validateToken(req.token)) {
     return res.status(401).json(tokenErrorObj);
   }
 

@@ -41,6 +41,8 @@ export default function Users() {
     const resJson = await res.json();
     const error = resJson.error;
 
+    debugger;
+
     if (error) return handleResponseError(error);
 
     setUsers(users.concat(resJson));
